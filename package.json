@@ -1,0 +1,26 @@
+{
+  "name": "opencode-workspace",
+  "version": "0.1.0",
+  "description": "Multi-root workspace support for OpenCode, enabling VS Code .code-workspace file parsing and cross-directory operations.",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0"
+  },
+  "peerDependencies": {
+    "zod": ">=3.0.0"
+  }
+}
