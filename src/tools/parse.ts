@@ -1,15 +1,18 @@
 import { tool, type ToolDefinition } from "@opencode-ai/plugin"
 import { parseWorkspaceFile } from "../parser.js"
+import { requireActiveWorkspace } from "../state.js"
 
 export const parse: ToolDefinition = tool({
   description: `Parse a .code-workspace file and return all configured folders with their resolved absolute paths.
 Each folder includes: name, relative path (as written in the file), absolute path, and whether it exists on disk.
-Use this to understand the multi-root workspace structure.`,
+Use this to understand the multi-root workspace structure.
+If no file is specified, uses the currently selected workspace (set via workspace_select).`,
   args: {
-    file: tool.schema.string().describe("Path to the .code-workspace file (absolute or relative to project directory)"),
+    file: tool.schema.string().optional().describe("Path to the .code-workspace file (optional if workspace_select was used)"),
   },
   async execute(args, ctx) {
-    const config = parseWorkspaceFile(args.file, ctx.directory)
+    const wsFile = requireActiveWorkspace(args.file, ctx.directory)
+    const config = parseWorkspaceFile(wsFile, ctx.directory)
 
     const summary = [
       `Workspace: ${config.file}`,

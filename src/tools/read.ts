@@ -2,6 +2,7 @@ import * as fs from "fs"
 import * as path from "path"
 import { tool, type ToolDefinition } from "@opencode-ai/plugin"
 import { parseWorkspaceFile, type WorkspaceFolder } from "../parser.js"
+import { requireActiveWorkspace } from "../state.js"
 
 const MAX_LINES = 2000
 const MAX_LINE_LENGTH = 2000
@@ -23,16 +24,18 @@ function resolveFolder(folders: WorkspaceFolder[], folderName: string): Workspac
 export const read: ToolDefinition = tool({
   description: `Read a file from a specific folder within a .code-workspace multi-root workspace.
 Resolves the folder by name, then reads the file relative to that folder's root.
-Supports offset and limit for large files. Returns line-numbered content.`,
+Supports offset and limit for large files. Returns line-numbered content.
+If no workspace is specified, uses the currently selected workspace (set via workspace_select).`,
   args: {
-    workspace: tool.schema.string().describe("Path to the .code-workspace file"),
+    workspace: tool.schema.string().optional().describe("Path to the .code-workspace file (optional if workspace_select was used)"),
     folder: tool.schema.string().describe("Folder name as defined in the workspace (e.g. 'bulb', 'ydoc')"),
     file: tool.schema.string().describe("File path relative to the folder root (e.g. 'src/index.ts')"),
     offset: tool.schema.number().int().min(1).optional().describe("Start line (1-indexed, default 1)"),
     limit: tool.schema.number().int().min(1).optional().describe("Max lines to read (default 2000)"),
   },
   async execute(args, ctx) {
-    const config = parseWorkspaceFile(args.workspace, ctx.directory)
+    const wsFile = requireActiveWorkspace(args.workspace, ctx.directory)
+    const config = parseWorkspaceFile(wsFile, ctx.directory)
     const folder = resolveFolder(config.folders, args.folder)
     const filePath = path.resolve(folder.absolutePath, args.file)
 

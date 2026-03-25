@@ -2,15 +2,17 @@ import * as path from "path"
 import { execSync } from "child_process"
 import { tool, type ToolDefinition } from "@opencode-ai/plugin"
 import { parseWorkspaceFile } from "../parser.js"
+import { requireActiveWorkspace } from "../state.js"
 
 const MAX_RESULTS = 200
 
 export const glob: ToolDefinition = tool({
   description: `Find files by name pattern across all folders in a .code-workspace multi-root workspace.
 Uses find command with glob matching. Results are grouped by workspace folder.
-Example patterns: "*.ts", "*.test.*", "package.json", "**/*.config.*"`,
+Example patterns: "*.ts", "*.test.*", "package.json", "**/*.config.*"
+If no workspace is specified, uses the currently selected workspace (set via workspace_select).`,
   args: {
-    workspace: tool.schema.string().describe("Path to the .code-workspace file"),
+    workspace: tool.schema.string().optional().describe("Path to the .code-workspace file (optional if workspace_select was used)"),
     pattern: tool.schema.string().describe('Glob pattern to match file names (e.g. "*.ts", "package.json")'),
     folders: tool.schema
       .string()
@@ -18,7 +20,8 @@ Example patterns: "*.ts", "*.test.*", "package.json", "**/*.config.*"`,
       .describe("Comma-separated folder names to search (default: all folders)"),
   },
   async execute(args, ctx) {
-    const config = parseWorkspaceFile(args.workspace, ctx.directory)
+    const wsFile = requireActiveWorkspace(args.workspace, ctx.directory)
+    const config = parseWorkspaceFile(wsFile, ctx.directory)
     let folders = config.folders.filter((f) => f.exists)
 
     if (args.folders) {
