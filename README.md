@@ -8,43 +8,26 @@ AI coding assistants typically operate in a single project directory. If your co
 
 ## Install
 
-### MCP Server (Claude Code + OpenCode)
+建议使用 **npm 发布的包 + `npx`**：无需克隆仓库，也不必手写本机 `dist/server.js` 路径。发布包名：`open-workspace`（`npm view open-workspace` 可检查是否已发布）。
 
-The MCP Server is the universal approach — it works with any client that supports the [Model Context Protocol](https://modelcontextprotocol.io).
+### MCP Server（Claude Code + OpenCode）— 推荐
 
-#### Build
-
-```bash
-git clone https://github.com/FuDesign2008/open-workspace.git
-cd open-workspace
-npm install
-npm run build
-npm test
-```
-
-### Tests
-
-```bash
-npm test        # run once (Vitest)
-npm run test:watch
-```
-
-Covers `parser` (JSONC / discovery), `state` (active workspace), and `workspace-tool-core` (list, select, parse, read, grep, glob) using temporary directories.
+需要 **Node.js 18+**。MCP 走的是包内 `bin` 入口（`open-workspace` → `dist/server.js`）。
 
 #### Claude Code
 
 ```bash
-claude mcp add open-workspace -- node /path/to/open-workspace/dist/server.js
+claude mcp add open-workspace -- npx -y open-workspace@latest
 ```
 
-Or add to `.mcp.json` in your project root:
+或在项目根目录 `.mcp.json`：
 
 ```json
 {
   "mcpServers": {
     "open-workspace": {
-      "command": "node",
-      "args": ["/path/to/open-workspace/dist/server.js"],
+      "command": "npx",
+      "args": ["-y", "open-workspace@latest"],
       "env": {
         "WORKSPACE_DIR": "/path/to/your/project"
       }
@@ -53,16 +36,14 @@ Or add to `.mcp.json` in your project root:
 }
 ```
 
-#### OpenCode MCP
-
-Add to your `opencode.json` (or `opencode.jsonc`):
+#### OpenCode（`opencode.json` / `opencode.jsonc`）
 
 ```jsonc
 {
   "mcp": {
     "open-workspace": {
       "type": "local",
-      "command": ["node", "/path/to/open-workspace/dist/server.js"],
+      "command": ["npx", "-y", "open-workspace@latest"],
       "enabled": true,
       "environment": {
         "WORKSPACE_DIR": "/path/to/your/project"
@@ -72,23 +53,110 @@ Add to your `opencode.json` (or `opencode.jsonc`):
 }
 ```
 
-> **Note:** `WORKSPACE_DIR` is optional. If omitted, the server uses the current working directory.
+> **Note:** `WORKSPACE_DIR` 可选；省略时使用当前工作目录。首次 `npx` 拉包会略慢，之后会复用缓存。
 
-### OpenCode Plugin (Alternative)
+#### 固定版本（可选）
 
-If you prefer the native OpenCode plugin system over MCP:
+将 `open-workspace@latest` 换成 `open-workspace@0.2.0` 等，避免次版本自动升级。
+
+#### 从源码运行 MCP（不推荐日常）
+
+若你已克隆本仓库并完成 `npm install && npm run build`：
+
+```bash
+claude mcp add open-workspace -- node /absolute/path/to/open-workspace/dist/server.js
+```
+
+### OpenCode 原生插件（不按 MCP）
+
+与 MCP 二选一即可；插件走 `@opencode-ai/plugin`，不启动独立 MCP 进程。
 
 ```bash
 npm install open-workspace
 ```
-
-Add to your `opencode.jsonc`:
 
 ```jsonc
 {
   "plugin": ["open-workspace"]
 }
 ```
+
+### Skills（OpenCode 斜杠命令）
+
+安装 **同一 npm 包** 后，技能文件在包目录的 `skills/` 下（全局或项目本地均可）。
+
+全局安装：
+
+```bash
+npm install -g open-workspace
+ln -sf "$(npm root -g)/open-workspace/skills" ~/.config/opencode/skills/open-workspace
+```
+
+仅装在当前项目：
+
+```bash
+npm install open-workspace
+ln -sf "$(pwd)/node_modules/open-workspace/skills" ~/.config/opencode/skills/open-workspace
+```
+
+改完后重启 OpenCode。仍可从 [本仓库 skills 目录](https://github.com/FuDesign2008/open-workspace/tree/main/skills) 用 `ln -s` 指过去。
+
+### 维护者：通过 GitHub Release 发布到 npm（推荐）
+
+采用 [`.github/workflows/publish-npm.yml`](.github/workflows/publish-npm.yml)：在发布 **GitHub Release（已 Publish，非草稿）** 时自动执行 `npm ci` → `npm test` → `npm publish --access public`。发布前 `prepublishOnly` 会执行 `npm run build`。
+
+#### 1. 一次性：配置 `NPM_TOKEN`
+
+1. 在 npm 创建 **仅用于 CI** 的令牌（任选其一）：
+   - **Granular Access Token**（推荐）：权限需包含对包 **open-workspace** 的 **Read and write**（若包尚未存在，首次发布前可用具备发布权限的账户创建包）。
+   - 或 **Classic** 令牌类型选 **Automation**（专门给 CI 使用）。  
+   详见 [npm 文档：Access Tokens](https://docs.npmjs.com/about-access-tokens)。
+2. 打开本仓库：**Settings** → **Secrets and variables** → **Actions** → **New repository secret**  
+   - **Name：** `NPM_TOKEN`（须与工作流中一致）  
+   - **Secret：** 粘贴上一步的令牌。
+
+#### 2. 发版前：`main` 上的版本号
+
+- `package.json` 里的 **`version`** 即为将要出现在 npm 上的版本（例如 `0.2.0`）。  
+- 在启用分支保护时，请先通过 PR 将版本号（及变更）合并进 `main`，再发 Release。  
+- Git 标签建议使用 `v0.2.0` 等与版本对应；**npm 始终以 `package.json` 的 `version` 为准**。
+
+#### 3. 创建并发布 GitHub Release
+
+1. 进入 **Releases** → **Draft a new release**。  
+2. **Choose a tag**：新建标签（如 `v0.2.0`），指向当前 `main` 上已含目标 `version` 的提交。  
+3. 填写 Release 标题与说明后，点击 **Publish release**。  
+   - 工作流由 **`release` 事件且 `published`** 触发；仅保存为草稿不会触发发布。
+
+#### 4. 验证
+
+- 在 **Actions** 中查看 **Publish npm** 运行结果。  
+- 本地执行：`npm view open-workspace version`。
+
+#### 备选：手动触发工作流
+
+在 **Actions** → **Publish npm** → **Run workflow** 可手动运行（仍依赖已配置的 `NPM_TOKEN`），便于排查；平时仍以 **Publish release** 为准以便版本与发行说明一致。
+
+#### 不推荐：本地 `npm publish`
+
+仅在应急或调试时使用；常规发版请走 Release，以便 CI 统一执行测试与构建。
+
+### 从源码参与开发
+
+```bash
+git clone https://github.com/FuDesign2008/open-workspace.git
+cd open-workspace
+npm install
+npm test
+npm run build
+```
+
+```bash
+npm test        # Vitest
+npm run test:watch
+```
+
+测试覆盖 `parser`、`state`、`workspace-tool-core`（临时目录下的 list / select / read / grep / glob 等）。
 
 ## Setup
 
@@ -169,13 +237,7 @@ The plugin ships with 3 skills that register as user-invocable slash commands in
 | `ows:search` | "search workspace", "grep workspace" | Search file contents or find files by name |
 | `ows:read` | "read workspace file" | Read files from any workspace folder |
 
-### Install Skills
-
-```bash
-ln -s "$(pwd)/skills" ~/.config/opencode/skills/open-workspace
-```
-
-After linking, restart OpenCode. The skills appear as `/ows:select`, `/ows:search`, `/ows:read`.
+安装方式见上文 **Skills（OpenCode 斜杠命令）**。链接成功后重启 OpenCode，可出现 `/ows:select`、`/ows:search`、`/ows:read`。
 
 ## Architecture
 

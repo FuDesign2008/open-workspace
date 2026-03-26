@@ -19,14 +19,26 @@
     ".": "./src/index.ts"
   },
   "files": [
-    "src",
-    "dist"
+    "dist",
+    "skills",
+    "src/index.ts",
+    "src/parser.ts",
+    "src/state.ts",
+    "src/server.ts",
+    "src/workspace-tool-core.ts",
+    "src/tools/list.ts",
+    "src/tools/select.ts",
+    "src/tools/parse.ts",
+    "src/tools/read.ts",
+    "src/tools/grep.ts",
+    "src/tools/glob.ts"
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.28.0",
