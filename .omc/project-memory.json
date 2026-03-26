@@ -1,0 +1,165 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1774504337250,
+  "projectRoot": "/Users/admin/workspace/ynote/ynote-one/opencode-workspace",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {
+      "typecheck": "tsc --noEmit",
+      "build": "tsc"
+    }
+  },
+  "conventions": {
+    "namingStyle": "camelCase",
+    "importStyle": "ES modules",
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "src"
+    ],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "dist": {
+      "path": "dist",
+      "purpose": "Distribution/build output",
+      "fileCount": 16,
+      "lastAccessed": 1774504337201,
+      "keyFiles": [
+        "index.d.ts",
+        "index.d.ts.map",
+        "index.js",
+        "index.js.map",
+        "parser.d.ts"
+      ]
+    },
+    "skills": {
+      "path": "skills",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1774504337229,
+      "keyFiles": []
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 4,
+      "lastAccessed": 1774504337237,
+      "keyFiles": [
+        "index.ts",
+        "parser.ts",
+        "server.ts",
+        "state.ts"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "README.md",
+      "accessCount": 11,
+      "lastAccessed": 1774506698485,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 5,
+      "lastAccessed": 1774506401364,
+      "type": "directory"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 3,
+      "lastAccessed": 1774505076311,
+      "type": "file"
+    },
+    {
+      "path": "src/server.ts",
+      "accessCount": 3,
+      "lastAccessed": 1774505268567,
+      "type": "file"
+    },
+    {
+      "path": "package-lock.json",
+      "accessCount": 2,
+      "lastAccessed": 1774505134478,
+      "type": "file"
+    },
+    {
+      "path": "skills/select/SKILL.md",
+      "accessCount": 2,
+      "lastAccessed": 1774506418228,
+      "type": "file"
+    },
+    {
+      "path": "skills/search/SKILL.md",
+      "accessCount": 2,
+      "lastAccessed": 1774506418522,
+      "type": "file"
+    },
+    {
+      "path": "skills/read/SKILL.md",
+      "accessCount": 2,
+      "lastAccessed": 1774506418773,
+      "type": "file"
+    },
+    {
+      "path": "skills/workspace-select/SKILL.md",
+      "accessCount": 1,
+      "lastAccessed": 1774505752476,
+      "type": "file"
+    },
+    {
+      "path": "ws/select/SKILL.md",
+      "accessCount": 1,
+      "lastAccessed": 1774506207695,
+      "type": "file"
+    },
+    {
+      "path": "ws/read/SKILL.md",
+      "accessCount": 1,
+      "lastAccessed": 1774506207748,
+      "type": "file"
+    },
+    {
+      "path": "ws/search/SKILL.md",
+      "accessCount": 1,
+      "lastAccessed": 1774506207799,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

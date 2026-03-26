@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd /Users/admin/workspace/github2008/opencode-workspace/skills && mv workspace-read read\",\"description\":\"重命名 workspace-read 为 read\"}",
+  "error": "Exit code 1\nmv: rename workspace-read to read/workspace-read: No such file or directory\n\nmv: rename workspace-read to read/workspace-read: No such file or directory",
+  "timestamp": "2026-03-26T06:22:59.814Z",
+  "retry_count": 4
+}
