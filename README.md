@@ -57,7 +57,7 @@ claude mcp add open-workspace -- npx -y open-workspace@latest
 
 #### 固定版本（可选）
 
-将 `open-workspace@latest` 换成 `open-workspace@0.2.0` 等，避免次版本自动升级。
+将 `open-workspace@latest` 换成 `open-workspace@0.2.1` 等，避免次版本自动升级。
 
 #### 从源码运行 MCP（不推荐日常）
 

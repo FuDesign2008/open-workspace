@@ -189,6 +189,29 @@
 
 ---
 
+## 2026-03-27 — 0.2.1：npm 规范修正与再次发布
+
+**状态：已修复**
+
+**修复方式：** 运行 `npm pkg fix`：`repository.url` 改为 `git+https://...` 形式，`bin.open-workspace` 去掉无意义的 `./` 前缀；将 `version` 升至 **0.2.1**（避免与已发布 **0.2.0** 冲突），`src/server.ts` 中 MCP 元数据版本与之一致；同步 `package-lock.json`、README 钉版本示例；通过 `npm test` / `npm run build` 后合并 **main** 并发布 **GitHub Release v0.2.1** 触发 `Publish npm`。
+
+**验证场景列表：**
+
+**场景 1 — 本地**
+
+1. 执行 `npm test`、`npm run build`。  
+2. `npm pack --dry-run` 无警告中的 “auto-corrected” 类问题（或与发布前一致）。
+
+**预期结果：** 构建与测试通过。
+
+**场景 2 — npm**
+
+1. 发布完成后执行 `npm view open-workspace version`。
+
+**预期结果：** 输出 `0.2.1`。
+
+---
+
 ## 2026-03-26 — 深化 npm 令牌与发布排障（MAINTAINERS + CI 预检）
 
 **状态：已修复**
