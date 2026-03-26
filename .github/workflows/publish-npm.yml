@@ -1,5 +1,5 @@
 # Release「Publish」后自动发布到 npm。Secrets 名称必须为 NPM_TOKEN。
-# 文档：README「维护者：通过 GitHub Release 发布到 npm」。
+# 维护说明：docs/MAINTAINERS.md
 name: Publish npm
 
 on:

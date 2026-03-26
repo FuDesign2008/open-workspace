@@ -140,3 +140,26 @@
 1. 在 `main` 上提交小改动后执行 `git push origin main`。
 
 **预期结果：** 推送成功，无 “repository not found” 或旧名残留。
+
+---
+
+## 2026-03-26 — 维护者说明迁至独立文档
+
+**状态：已修复**
+
+**修复方式：** 新增 `docs/MAINTAINERS.md`，收录发布 npm、配置 `NPM_TOKEN`、GitHub Release、手动工作流及包说明等维护者内容；`README.md` 中对应长文改为指向该文档的简短「维护者」小节；`.github/workflows/publish-npm.yml` 注释改为引用 `docs/MAINTAINERS.md`。
+
+**验证场景列表：**
+
+**场景 1 — 文档可读性**
+
+1. 打开 `docs/MAINTAINERS.md`。  
+2. 从 `README.md` 的「维护者」链接跳转。
+
+**预期结果：** 维护流程完整可读，链接有效。
+
+**场景 2 — 工作流注释**
+
+1. 打开 `.github/workflows/publish-npm.yml` 文件头注释。
+
+**预期结果：** 注明维护说明见 `docs/MAINTAINERS.md`。
