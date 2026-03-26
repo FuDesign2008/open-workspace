@@ -155,9 +155,9 @@ The plugin ships with 3 skills that register as user-invocable slash commands in
 
 | Skill | Trigger phrases | What it does |
 |---|---|---|
-| `workspace-select` | "select workspace", "switch workspace" | Choose which `.code-workspace` to use |
-| `workspace-search` | "search workspace", "grep workspace" | Search file contents or find files by name |
-| `workspace-read` | "read workspace file" | Read files from any workspace folder |
+| `ows:select` | "select workspace", "switch workspace" | Choose which `.code-workspace` to use |
+| `ows:search` | "search workspace", "grep workspace" | Search file contents or find files by name |
+| `ows:read` | "read workspace file" | Read files from any workspace folder |
 
 ### Install Skills
 
@@ -165,7 +165,7 @@ The plugin ships with 3 skills that register as user-invocable slash commands in
 ln -s "$(pwd)/skills" ~/.config/opencode/skills/open-workspace
 ```
 
-After linking, restart OpenCode. The skills appear as `/open-workspace:workspace-select`, etc.
+After linking, restart OpenCode. The skills appear as `/ows:select`, `/ows:search`, `/ows:read`.
 
 ## Architecture
 

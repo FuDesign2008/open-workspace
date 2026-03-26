@@ -1,5 +1,5 @@
 ---
-name: open-workspace:select
+name: ows:select
 version: "1.0.0"
 user-invocable: true
 description: >

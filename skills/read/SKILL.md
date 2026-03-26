@@ -1,5 +1,5 @@
 ---
-name: open-workspace:read
+name: ows:read
 version: "1.0.0"
 user-invocable: true
 description: >

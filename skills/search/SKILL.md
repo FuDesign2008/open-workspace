@@ -1,5 +1,5 @@
 ---
-name: open-workspace:search
+name: ows:search
 version: "1.0.0"
 user-invocable: true
 description: >
