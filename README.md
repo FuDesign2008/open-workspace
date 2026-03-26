@@ -19,7 +19,17 @@ git clone https://github.com/FuDesign2008/open-workspace.git
 cd open-workspace
 npm install
 npm run build
+npm test
 ```
+
+### Tests
+
+```bash
+npm test        # run once (Vitest)
+npm run test:watch
+```
+
+Covers `parser` (JSONC / discovery), `state` (active workspace), and `workspace-tool-core` (list, select, parse, read, grep, glob) using temporary directories.
 
 #### Claude Code
 
@@ -171,14 +181,15 @@ After linking, restart OpenCode. The skills appear as `/ows:select`, `/ows:searc
 
 ```
 src/
-  server.ts       # MCP Server entry (stdio transport, registers all 6 tools)
-  index.ts        # OpenCode plugin entry (backward compatible)
-  parser.ts       # .code-workspace JSONC parser (shared by both entries)
-  state.ts        # Session state management (shared by both entries)
-  tools/          # Tool implementations in OpenCode plugin format
+  server.ts                # MCP Server entry (stdio transport, registers all 6 tools)
+  index.ts                 # OpenCode plugin entry (backward compatible)
+  workspace-tool-core.ts   # Shared workspace_* behavior (list/select/parse/read/grep/glob)
+  parser.ts                # .code-workspace JSONC parser
+  state.ts                 # Session state (active workspace)
+  tools/                   # OpenCode tool wrappers (thin; delegate to workspace-tool-core)
 ```
 
-The MCP Server (`server.ts`) and OpenCode plugin (`index.ts`) share the same core logic (`parser.ts`, `state.ts`) but expose tools through different protocols.
+The MCP Server (`server.ts`) and OpenCode plugin (`index.ts`) share the same behavior via `workspace-tool-core.ts` (`parser.ts`, `state.ts`), and expose tools through different protocols.
 
 ## License
 
