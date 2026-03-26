@@ -8,43 +8,26 @@ AI coding assistants typically operate in a single project directory. If your co
 
 ## Install
 
-### MCP Server (Claude Code + OpenCode)
+建议使用 **npm 发布的包 + `npx`**：无需克隆仓库，也不必手写本机 `dist/server.js` 路径。发布包名：`open-workspace`（`npm view open-workspace` 可检查是否已发布）。
 
-The MCP Server is the universal approach — it works with any client that supports the [Model Context Protocol](https://modelcontextprotocol.io).
+### MCP Server（Claude Code + OpenCode）— 推荐
 
-#### Build
-
-```bash
-git clone https://github.com/FuDesign2008/open-workspace.git
-cd open-workspace
-npm install
-npm run build
-npm test
-```
-
-### Tests
-
-```bash
-npm test        # run once (Vitest)
-npm run test:watch
-```
-
-Covers `parser` (JSONC / discovery), `state` (active workspace), and `workspace-tool-core` (list, select, parse, read, grep, glob) using temporary directories.
+需要 **Node.js 18+**。MCP 走的是包内 `bin` 入口（`open-workspace` → `dist/server.js`）。
 
 #### Claude Code
 
 ```bash
-claude mcp add open-workspace -- node /path/to/open-workspace/dist/server.js
+claude mcp add open-workspace -- npx -y open-workspace@latest
 ```
 
-Or add to `.mcp.json` in your project root:
+或在项目根目录 `.mcp.json`：
 
 ```json
 {
   "mcpServers": {
     "open-workspace": {
-      "command": "node",
-      "args": ["/path/to/open-workspace/dist/server.js"],
+      "command": "npx",
+      "args": ["-y", "open-workspace@latest"],
       "env": {
         "WORKSPACE_DIR": "/path/to/your/project"
       }
@@ -53,16 +36,14 @@ Or add to `.mcp.json` in your project root:
 }
 ```
 
-#### OpenCode MCP
-
-Add to your `opencode.json` (or `opencode.jsonc`):
+#### OpenCode（`opencode.json` / `opencode.jsonc`）
 
 ```jsonc
 {
   "mcp": {
     "open-workspace": {
       "type": "local",
-      "command": ["node", "/path/to/open-workspace/dist/server.js"],
+      "command": ["npx", "-y", "open-workspace@latest"],
       "enabled": true,
       "environment": {
         "WORKSPACE_DIR": "/path/to/your/project"
@@ -72,23 +53,74 @@ Add to your `opencode.json` (or `opencode.jsonc`):
 }
 ```
 
-> **Note:** `WORKSPACE_DIR` is optional. If omitted, the server uses the current working directory.
+> **Note:** `WORKSPACE_DIR` 可选；省略时使用当前工作目录。首次 `npx` 拉包会略慢，之后会复用缓存。
 
-### OpenCode Plugin (Alternative)
+#### 固定版本（可选）
 
-If you prefer the native OpenCode plugin system over MCP:
+将 `open-workspace@latest` 换成 `open-workspace@0.2.0` 等，避免次版本自动升级。
+
+#### 从源码运行 MCP（不推荐日常）
+
+若你已克隆本仓库并完成 `npm install && npm run build`：
+
+```bash
+claude mcp add open-workspace -- node /absolute/path/to/open-workspace/dist/server.js
+```
+
+### OpenCode 原生插件（不按 MCP）
+
+与 MCP 二选一即可；插件走 `@opencode-ai/plugin`，不启动独立 MCP 进程。
 
 ```bash
 npm install open-workspace
 ```
-
-Add to your `opencode.jsonc`:
 
 ```jsonc
 {
   "plugin": ["open-workspace"]
 }
 ```
+
+### Skills（OpenCode 斜杠命令）
+
+安装 **同一 npm 包** 后，技能文件在包目录的 `skills/` 下（全局或项目本地均可）。
+
+全局安装：
+
+```bash
+npm install -g open-workspace
+ln -sf "$(npm root -g)/open-workspace/skills" ~/.config/opencode/skills/open-workspace
+```
+
+仅装在当前项目：
+
+```bash
+npm install open-workspace
+ln -sf "$(pwd)/node_modules/open-workspace/skills" ~/.config/opencode/skills/open-workspace
+```
+
+改完后重启 OpenCode。仍可从 [本仓库 skills 目录](https://github.com/FuDesign2008/open-workspace/tree/main/skills) 用 `ln -s` 指过去。
+
+### 维护者
+
+发布流程、npm 令牌与 GitHub Actions（`NPM_TOKEN`、Release 发版等）见 **[docs/MAINTAINERS.md](docs/MAINTAINERS.md)**。
+
+### 从源码参与开发
+
+```bash
+git clone https://github.com/FuDesign2008/open-workspace.git
+cd open-workspace
+npm install
+npm test
+npm run build
+```
+
+```bash
+npm test        # Vitest
+npm run test:watch
+```
+
+测试覆盖 `parser`、`state`、`workspace-tool-core`（临时目录下的 list / select / read / grep / glob 等）。
 
 ## Setup
 
@@ -169,13 +201,7 @@ The plugin ships with 3 skills that register as user-invocable slash commands in
 | `ows:search` | "search workspace", "grep workspace" | Search file contents or find files by name |
 | `ows:read` | "read workspace file" | Read files from any workspace folder |
 
-### Install Skills
-
-```bash
-ln -s "$(pwd)/skills" ~/.config/opencode/skills/open-workspace
-```
-
-After linking, restart OpenCode. The skills appear as `/ows:select`, `/ows:search`, `/ows:read`.
+安装方式见上文 **Skills（OpenCode 斜杠命令）**。链接成功后重启 OpenCode，可出现 `/ows:select`、`/ows:search`、`/ows:read`。
 
 ## Architecture
 

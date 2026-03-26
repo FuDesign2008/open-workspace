@@ -90,8 +90,76 @@
 
 **预期结果：** `nameWithOwner` 为 `FuDesign2008/open-workspace`；`origin` 为 `git@github.com:FuDesign2008/open-workspace.git`（或等效 HTTPS URL）。
 
+---
+
+## 2026-03-26 — 简化安装：npm 发布准备与 README
+
+**状态：已修复**
+
+**修复方式：** `package.json` 将 `skills` 与必要的 `src/*.ts`、`src/tools/*.ts` 列入 `files`（不含 `*.test.ts`）、增加 `prepublishOnly`（发布前 `build`）；新增 `.github/workflows/publish-npm.yml`（Release / 手动触发时用 `NPM_TOKEN` 执行 `npm publish`）；重写 README「Install」：推荐 `npx -y open-workspace@latest` 配置 Claude Code / OpenCode MCP，补充 skills 从 `node_modules` / 全局包链接的步骤，以及维护者发布说明；Skills 小节改为引用上文安装节。
+
+**验证场景列表：**
+
+**场景 1 — 构建与测试**
+
+1. 执行 `npm run build`、`npm test`。
+
+**预期结果：** 通过；`npm pack --dry-run` 列出含 `dist/`、`skills/`、`src/`。
+
+**场景 2 — 维护者首次发版**
+
+1. 配置 `NPM_TOKEN`，在 GitHub 发布 Release 或手动运行 workflow；或本地 `npm publish --access public`。
+
+**预期结果：** npm 上可安装 `open-workspace`；用户可按 README 使用 `npx` 注册 MCP。
+
+---
+
+## 2026-03-26 — 明确以 GitHub Release + NPM_TOKEN 为主发布路径
+
+**状态：已修复**
+
+**修复方式：** README「维护者」整节改为分步说明：创建 npm 令牌、在仓库 Actions Secrets 中配置 `NPM_TOKEN`、保证 `main` 上 `package.json` 版本、Publish GitHub Release（非草稿）、在 Actions / `npm view` 验证；补充手动 `workflow_dispatch` 与「本地 publish 仅应急」。工作流文件增加步骤名称与注释指向 README。
+
+**验证场景列表：**
+
+**场景 1 — 阅读发布说明**
+
+1. 打开 README「维护者：通过 GitHub Release 发布到 npm」。
+2. 对照 GitHub 与 npm 界面逐步核对是否可执行。
+
+**预期结果：** 可不依赖本地 `npm publish` 完成常规发版。
+
+**场景 2 — 工作流**
+
+1. 打开 `.github/workflows/publish-npm.yml`。
+
+**预期结果：** `NODE_AUTH_TOKEN` 使用 `secrets.NPM_TOKEN`；`release` 类型为 `published`。
+
 **场景 2 — 推送**
 
 1. 在 `main` 上提交小改动后执行 `git push origin main`。
 
 **预期结果：** 推送成功，无 “repository not found” 或旧名残留。
+
+---
+
+## 2026-03-26 — 维护者说明迁至独立文档
+
+**状态：已修复**
+
+**修复方式：** 新增 `docs/MAINTAINERS.md`，收录发布 npm、配置 `NPM_TOKEN`、GitHub Release、手动工作流及包说明等维护者内容；`README.md` 中对应长文改为指向该文档的简短「维护者」小节；`.github/workflows/publish-npm.yml` 注释改为引用 `docs/MAINTAINERS.md`。
+
+**验证场景列表：**
+
+**场景 1 — 文档可读性**
+
+1. 打开 `docs/MAINTAINERS.md`。  
+2. 从 `README.md` 的「维护者」链接跳转。
+
+**预期结果：** 维护流程完整可读，链接有效。
+
+**场景 2 — 工作流注释**
+
+1. 打开 `.github/workflows/publish-npm.yml` 文件头注释。
+
+**预期结果：** 注明维护说明见 `docs/MAINTAINERS.md`。
