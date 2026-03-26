@@ -1,10 +1,10 @@
 {
   "name": "open-workspace",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Multi-root workspace support for OpenCode and Claude Code via MCP, enabling VS Code .code-workspace file parsing and cross-directory operations.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/FuDesign2008/open-workspace.git"
+    "url": "git+https://github.com/FuDesign2008/open-workspace.git"
   },
   "bugs": {
     "url": "https://github.com/FuDesign2008/open-workspace/issues"
@@ -13,7 +13,7 @@
   "type": "module",
   "license": "MIT",
   "bin": {
-    "open-workspace": "./dist/server.js"
+    "open-workspace": "dist/server.js"
   },
   "exports": {
     ".": "./src/index.ts"

@@ -16,7 +16,7 @@ function getDirectory(): string {
 }
 
 const server = new McpServer(
-  { name: "open-workspace", version: "0.2.0" },
+  { name: "open-workspace", version: "0.2.1" },
   {
     instructions: [
       "Multi-root workspace support for VS Code .code-workspace files.",
