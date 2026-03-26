@@ -163,3 +163,25 @@
 1. 打开 `.github/workflows/publish-npm.yml` 文件头注释。
 
 **预期结果：** 注明维护说明见 `docs/MAINTAINERS.md`。
+
+---
+
+## 2026-03-26 — 深化 npm 令牌与发布排障（MAINTAINERS + CI 预检）
+
+**状态：已修复**
+
+**修复方式：** 扩展 `docs/MAINTAINERS.md`：当前 registry 状态说明、Granular / Classic Automation 令牌步骤、GitHub Secret 自检（`workflow_dispatch`）、首包创建与版本不可重复发布、常见问题表（401/403/OTP/E409 等）；补充相关官方文档链接。在 `.github/workflows/publish-npm.yml` 增加 **Require NPM_TOKEN** 步骤，缺失 Secret 时失败并指向 `docs/MAINTAINERS.md`。
+
+**验证场景列表：**
+
+**场景 1 — 文档**
+
+1. 通读更新后的 `docs/MAINTAINERS.md`。
+
+**预期结果：** 可按文档完成令牌配置、发 Release 与排障。
+
+**场景 2 — 工作流**
+
+1. 在未配置 `NPM_TOKEN` 的测试仓库中手动运行 **Publish npm**（若可复现）；或检查 YAML 中 Require 步骤逻辑。
+
+**预期结果：** 缺失 token 时明确报错并引用维护文档。
