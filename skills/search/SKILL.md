@@ -16,7 +16,7 @@ Search across all folders in the active `.code-workspace` file.
 
 ## Prerequisites
 
-A workspace must be selected first. If none is active, invoke the `workspace-select` skill.
+If no `.code-workspace` is active for this session, either use skill `ows:select` (`/ows:select`) and tool `workspace_select`, or pass `workspace` on `workspace_grep` / `workspace_glob` with the `.code-workspace` file path.
 
 ## Search by Content (grep)
 
