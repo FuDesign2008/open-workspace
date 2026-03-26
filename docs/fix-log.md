@@ -72,3 +72,26 @@
 1. 在 CI 中同样运行 `npm ci`（或 `npm install`）、`npm run typecheck`、`npm test`、`npm run build`。
 
 **预期结果：** 命令链成功；`workspaceGrep` / `workspaceGlob` 测试依赖系统自带 `grep` 与 `find`（与当前 MCP 实现一致）。
+
+---
+
+## 2026-03-26 — GitHub 仓库重命名为 open-workspace
+
+**状态：已修复**
+
+**修复方式：** 使用 `gh repo rename open-workspace` 将远程仓库由 `FuDesign2008/opencode-workspace` 更名为 `FuDesign2008/open-workspace`；本地执行 `git remote set-url origin git@github.com:FuDesign2008/open-workspace.git`。在 `package.json` 增加 `repository`、`bugs`、`homepage` 指向新地址（与 README 中 clone URL 一致）。
+
+**验证场景列表：**
+
+**场景 1 — 远程与克隆**
+
+1. 执行 `gh repo view --json nameWithOwner`。
+2. 使用 `git remote -v` 检查 `origin`。
+
+**预期结果：** `nameWithOwner` 为 `FuDesign2008/open-workspace`；`origin` 为 `git@github.com:FuDesign2008/open-workspace.git`（或等效 HTTPS URL）。
+
+**场景 2 — 推送**
+
+1. 在 `main` 上提交小改动后执行 `git push origin main`。
+
+**预期结果：** 推送成功，无 “repository not found” 或旧名残留。
