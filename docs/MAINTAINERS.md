@@ -4,8 +4,9 @@
 
 ## 当前状态
 
-- **npm 包名：** `open-workspace`（与 `package.json` 中 `name` 一致）。
-- **尚未发布时：** 执行 `npm view open-workspace version` 会得到 404，属正常；**首次成功的 `npm publish` 会在 registry 上创建该包**。
+- **npm 包名：** [`open-workspace`](https://www.npmjs.com/package/open-workspace)（与 `package.json` 中 `name` 一致）。
+- **registry：** 已在 npm 发布；版本以 `npm view open-workspace version`（或 [npm 包页](https://www.npmjs.com/package/open-workspace)）为准。刚发布后可能出现数秒～数分钟的 `404`，属 CDN 延迟。
+- **GitHub Actions Secret：** 名称必须 **恰好** 为 `NPM_TOKEN`（勿将 token 字符串误填为 Secret 名称）。
 
 ## 推荐路径：GitHub Release + `NPM_TOKEN`
 
