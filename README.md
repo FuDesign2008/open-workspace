@@ -8,7 +8,7 @@ AI coding assistants typically operate in a single project directory. If your co
 
 ## Install
 
-建议使用 **npm 发布的包 + `npx`**：无需克隆仓库，也不必手写本机 `dist/server.js` 路径。发布包名：`open-workspace`（`npm view open-workspace` 可检查是否已发布）。
+建议使用 **npm 上的包 + `npx`**：无需克隆仓库，也不必手写本机 `dist/server.js` 路径。包名：**[`open-workspace`](https://www.npmjs.com/package/open-workspace)**（当前版本可用 `npm view open-workspace version` 查看）。
 
 ### MCP Server（Claude Code + OpenCode）— 推荐
 

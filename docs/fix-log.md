@@ -166,6 +166,29 @@
 
 ---
 
+## 2026-03-27 — 发布后文档与 CI Actions 升级
+
+**状态：已修复**
+
+**修复方式：** README Install 首段改为指向 npm 包页并说明如何查版本；`docs/MAINTAINERS.md`「当前状态」同步为已发布、CDN 延迟说明及 Secret 命名提醒；`publish-npm.yml` 将 `actions/checkout`、`actions/setup-node` 升至 v5，并对 `setup-node` 设置 `package-manager-cache: false` 避免在含 `NPM_TOKEN` 的工作流中启用自动缓存。
+
+**验证场景列表：**
+
+**场景 1 — 文档**
+
+1. 打开 README Install 与 `docs/MAINTAINERS.md` 开头。  
+2. 点击 npm 链接可打开包页。
+
+**预期结果：** 与当前 registry 状态一致。
+
+**场景 2 — 工作流语法**
+
+1. 合并后观察 **Publish npm** 某次运行（或 `workflow_dispatch`）。  
+
+**预期结果：** 不再出现因旧版 Action 运行在 Node 20 上的弃用警告（以 GitHub 届时提示为准）；步骤正常完成。
+
+---
+
 ## 2026-03-26 — 深化 npm 令牌与发布排障（MAINTAINERS + CI 预检）
 
 **状态：已修复**
