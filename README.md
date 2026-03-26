@@ -1,4 +1,4 @@
-# opencode-workspace
+# open-workspace
 
 Multi-root workspace support for [OpenCode](https://github.com/sst/opencode) and [Claude Code](https://docs.anthropic.com/en/docs/build-with-claude/claude-code), enabling VS Code `.code-workspace` file parsing and cross-directory operations.
 
@@ -15,8 +15,8 @@ The MCP Server is the universal approach — it works with any client that suppo
 #### Build
 
 ```bash
-git clone https://github.com/FuDesign2008/opencode-workspace.git
-cd opencode-workspace
+git clone https://github.com/FuDesign2008/open-workspace.git
+cd open-workspace
 npm install
 npm run build
 ```
@@ -24,7 +24,7 @@ npm run build
 #### Claude Code
 
 ```bash
-claude mcp add opencode-workspace -- node /path/to/opencode-workspace/dist/server.js
+claude mcp add open-workspace -- node /path/to/open-workspace/dist/server.js
 ```
 
 Or add to `.mcp.json` in your project root:
@@ -32,9 +32,9 @@ Or add to `.mcp.json` in your project root:
 ```json
 {
   "mcpServers": {
-    "opencode-workspace": {
+    "open-workspace": {
       "command": "node",
-      "args": ["/path/to/opencode-workspace/dist/server.js"],
+      "args": ["/path/to/open-workspace/dist/server.js"],
       "env": {
         "WORKSPACE_DIR": "/path/to/your/project"
       }
@@ -50,9 +50,9 @@ Add to your `opencode.json` (or `opencode.jsonc`):
 ```jsonc
 {
   "mcp": {
-    "opencode-workspace": {
+    "open-workspace": {
       "type": "local",
-      "command": ["node", "/path/to/opencode-workspace/dist/server.js"],
+      "command": ["node", "/path/to/open-workspace/dist/server.js"],
       "enabled": true,
       "environment": {
         "WORKSPACE_DIR": "/path/to/your/project"
@@ -69,14 +69,14 @@ Add to your `opencode.json` (or `opencode.jsonc`):
 If you prefer the native OpenCode plugin system over MCP:
 
 ```bash
-npm install opencode-workspace
+npm install open-workspace
 ```
 
 Add to your `opencode.jsonc`:
 
 ```jsonc
 {
-  "plugin": ["opencode-workspace"]
+  "plugin": ["open-workspace"]
 }
 ```
 
@@ -162,10 +162,10 @@ The plugin ships with 3 skills that register as user-invocable slash commands in
 ### Install Skills
 
 ```bash
-ln -s "$(pwd)/skills" ~/.config/opencode/skills/opencode-workspace
+ln -s "$(pwd)/skills" ~/.config/opencode/skills/open-workspace
 ```
 
-After linking, restart OpenCode. The skills appear as `/opencode-workspace:workspace-select`, etc.
+After linking, restart OpenCode. The skills appear as `/open-workspace:workspace-select`, etc.
 
 ## Architecture
 

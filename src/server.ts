@@ -22,7 +22,7 @@ const MAX_LINE_LENGTH = 2000
 const MAX_RESULTS = 200
 
 const server = new McpServer(
-  { name: "opencode-workspace", version: "1.0.0" },
+  { name: "open-workspace", version: "0.2.0" },
   {
     instructions: [
       "Multi-root workspace support for VS Code .code-workspace files.",
