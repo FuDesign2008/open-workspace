@@ -1,5 +1,22 @@
 # 修复与变更记录
 
+## 2026-03-27 — README：Claude Code 安装 Skills
+
+**状态：已修复**
+
+**修复方式：** 在 `README.md` 的 **Install** 中扩展「Skills」小节：说明 Claude Code 与 OpenCode 的差异（Claude 需在 `~/.claude/skills/` 下为 `select` / `search` / `read` 分别建立符号链接，而非只链接整个 `skills` 父目录）；提供全局与项目内 `ln -sfn` 示例、`OWS` 路径说明及对 [Claude Code skills](https://docs.anthropic.com/en/docs/claude-code/skills)、[Agent Skills](https://agentskills.io/) 的引用；强调须先配置 MCP。将文末 **Skills** 英文小节改为同时覆盖 OpenCode 与 Claude Code。
+
+**验证场景列表：**
+
+**场景 1 — 文档可读性与命令可执行**
+
+1. 打开 `README.md` 中 **Skills（斜杠命令：OpenCode 与 Claude Code）** 与 **Skills (slash commands)**。
+2. 在已 `npm install -g open-workspace` 的机器上，按 **Claude Code** 小节复制命令（将 `ln` 目标路径按需替换为本地目录）。
+
+**预期结果：** 三节链接后，`~/.claude/skills/open-workspace-{select,search,read}/SKILL.md` 均解析到包内或仓库内对应文件；无错误占位或未闭合的代码块。
+
+---
+
 ## 2026-03-26 — `ows:read` 技能文档与工具一致
 
 **状态：已修复**
