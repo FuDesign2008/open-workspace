@@ -81,9 +81,15 @@ npm install open-workspace
 }
 ```
 
-### Skills（OpenCode 斜杠命令）
+### Skills（斜杠命令：OpenCode 与 Claude Code）
 
-安装 **同一 npm 包** 后，技能文件在包目录的 `skills/` 下（全局或项目本地均可）。
+三套技能（`ows:select` / `ows:search` / `ows:read`）共用本仓库 **[`skills/`](https://github.com/FuDesign2008/open-workspace/tree/main/skills)** 下同一批 `SKILL.md`。技能正文依赖 **`workspace_*` MCP 工具**，请先完成上文 **MCP Server** 配置，再装技能。
+
+[Claude Code 技能](https://docs.anthropic.com/en/docs/claude-code/skills)约定：每个技能是独立目录，内含 `SKILL.md`；个人级路径为 `~/.claude/skills/<目录名>/SKILL.md`（目录名不必与 frontmatter 里 `name` 相同，斜杠命令以 `name` 为准，如 `/ows:select`）。
+
+#### OpenCode
+
+安装 **同一 npm 包** 后，将包内整个 `skills` 目录链到 OpenCode 技能目录（全局或项目本地均可）。
 
 全局安装：
 
@@ -99,7 +105,36 @@ npm install open-workspace
 ln -sf "$(pwd)/node_modules/open-workspace/skills" ~/.config/opencode/skills/open-workspace
 ```
 
-改完后重启 OpenCode。仍可从 [本仓库 skills 目录](https://github.com/FuDesign2008/open-workspace/tree/main/skills) 用 `ln -s` 指过去。
+改完后重启 OpenCode。也可从本仓库 `skills/` 用 `ln -s` 指向同一结构。
+
+#### Claude Code
+
+OpenCode 是「整个 `skills` 目录一并链接」；Claude Code 需要 **`skills` 下每个子目录**（`select`、`read`、`search`）分别出现在 `~/.claude/skills/`（或项目内 `.claude/skills/`）下，每个子目录里已有 `SKILL.md`。
+
+全局安装（推荐与 `npm install -g open-workspace` 配合，路径与包版本一致）：
+
+```bash
+npm install -g open-workspace
+OWS="$(npm root -g)/open-workspace/skills"
+mkdir -p ~/.claude/skills
+ln -sfn "$OWS/select" ~/.claude/skills/open-workspace-select
+ln -sfn "$OWS/search" ~/.claude/skills/open-workspace-search
+ln -sfn "$OWS/read"   ~/.claude/skills/open-workspace-read
+```
+
+仅当前项目（在已执行 `npm install open-workspace` 的目录中）：
+
+```bash
+OWS="$(pwd)/node_modules/open-workspace/skills"
+mkdir -p .claude/skills
+ln -sfn "$OWS/select" .claude/skills/open-workspace-select
+ln -sfn "$OWS/search" .claude/skills/open-workspace-search
+ln -sfn "$OWS/read"   .claude/skills/open-workspace-read
+```
+
+从本仓库源码链接时，将 `OWS` 设为克隆目录下的绝对路径，例如 `OWS="/path/to/open-workspace/skills"`，再把上面三条里的 `OWS=...` 换成该路径后执行 `ln -sfn`（目标目录可改为 `~/.claude/skills/...` 以实现个人级安装）。
+
+新开或重启 Claude Code 会话后，可使用 **`/ows:select`**、**`/ows:search`**、**`/ows:read`**。`SKILL.md` 中的 `user-invocable` 等字段主要为 OpenCode 使用；Claude Code 会按 [Agent Skills](https://agentskills.io/) 约定识别 `name`、`description` 等，未知字段一般忽略。
 
 ### 维护者
 
@@ -191,9 +226,9 @@ workspace_glob pattern="*.config.*"
 workspace_glob pattern="package.json" folders="bulb,ydoc"
 ```
 
-## Skills (OpenCode Slash Commands)
+## Skills (slash commands)
 
-The plugin ships with 3 skills that register as user-invocable slash commands in OpenCode.
+The package ships with 3 skills (`SKILL.md` under `skills/`). In **OpenCode** they register as user-invocable slash commands; in **Claude Code** they follow [Claude Code skills](https://docs.anthropic.com/en/docs/claude-code/skills) discovery under `~/.claude/skills/` (see **Skills（斜杠命令：OpenCode 与 Claude Code）** above).
 
 | Skill | Trigger phrases | What it does |
 |---|---|---|
@@ -201,7 +236,7 @@ The plugin ships with 3 skills that register as user-invocable slash commands in
 | `ows:search` | "search workspace", "grep workspace" | Search file contents or find files by name |
 | `ows:read` | "read workspace file" | Read files from any workspace folder |
 
-安装方式见上文 **Skills（OpenCode 斜杠命令）**。链接成功后重启 OpenCode，可出现 `/ows:select`、`/ows:search`、`/ows:read`。
+After linking, restart the client (or start a new session). Commands: `/ows:select`, `/ows:search`, `/ows:read`.
 
 ## Architecture
 
